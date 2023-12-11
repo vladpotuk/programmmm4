@@ -1,0 +1,52 @@
+import random
+
+def is_digit_present(password):
+    return any(char.isdigit() for char in password)
+
+def is_uppercase_present(password):
+    return any(char.isupper() for char in password)
+
+def is_lowercase_present(password):
+    return any(char.islower() for char in password)
+
+def is_special_char_present(password):
+    special_chars = " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
+    return any(char in special_chars for char in password)
+
+def is_password_strong(password):
+    return (
+        len(password) >= 8 and
+        is_digit_present(password) and
+        is_uppercase_present(password) and
+        is_lowercase_present(password) and
+        is_special_char_present(password)
+    )
+
+def strong_password_check(password):
+    if is_password_strong(password):
+        print("Пароль є надійним.")
+    else:
+        print("Пароль не є надійним.")
+
+def strong_password_generation(length=12):
+    if length < 8:
+        raise ValueError("Довжина паролю повинна бути не менше 8 символів.")
+
+    digits = ''.join(random.choice(string.digits) for _ in range(length // 4))
+    uppercase_letters = ''.join(random.choice(string.ascii_uppercase) for _ in range(length // 4))
+    lowercase_letters = ''.join(random.choice(string.ascii_lowercase) for _ in range(length // 4))
+    special_chars = ''.join(random.choice(" !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~") for _ in range(length // 4))
+
+    # Комбінуємо групи і перемішуємо
+    all_chars = digits + uppercase_letters + lowercase_letters + special_chars
+    password_list = random.sample(all_chars, length)
+    password = ''.join(password_list)
+
+    return password
+
+# Приклад використання:
+user_password = input("Введіть пароль: ")
+strong_password_check(user_password)
+
+generated_password = strong_password_generation()
+print(f"Згенерований стійкий пароль: {generated_password}")
